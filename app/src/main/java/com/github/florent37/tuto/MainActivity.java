@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Tuto.from(this)
             .setContentView(R.layout.tuto_sample)
             .addCircle(R.id.importantView, null)
+            .addRoundRect(R.id.importantView, null)
             .addCircle(R.id.about, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

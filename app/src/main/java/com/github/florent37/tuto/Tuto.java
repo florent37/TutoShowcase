@@ -25,8 +25,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import com.github.florent37.tuto.shapes.Circle;
 
 public final class Tuto {
 
@@ -112,7 +113,7 @@ public final class Tuto {
     }
 
     public Tuto addCircle(@IdRes int viewId, View.OnClickListener onClickListener, float additionalRadiusRatio) {
-        addViewDelayed(viewId, onClickListener, additionalRadiusRatio);
+        addCircleDelayed(viewId, onClickListener, additionalRadiusRatio);
         return this;
     }
 
@@ -171,21 +172,47 @@ public final class Tuto {
         return result;
     }
 
-    private void addViewDelayed(final int viewId, final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
+    private void addCircleDelayed(@IdRes final int viewId, final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Context context = tutoView.getContext();
                 if (context instanceof Activity) {
-                    Activity activity = (Activity) context;
-                    final View view = activity.findViewById(viewId);
-                    addCircle(view, onClickListener, additionalRadiusRatio);
+                    final View view = ((Activity)context).findViewById(viewId);
+                    addCircleOnView(view, onClickListener, additionalRadiusRatio);
+                }
+            }
+        }, SAFE_DELAY_UNTIL_INFLATED);
+    }
+
+    private void addRoundRectDelayed(@IdRes final int viewId, final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Context context = tutoView.getContext();
+                if (context instanceof Activity) {
+                    final View view = ((Activity)context).findViewById(viewId);
+                    addRoundRectOnView(view, onClickListener, additionalRadiusRatio);
                 }
             }
         }, SAFE_DELAY_UNTIL_INFLATED);
     }
 
     private void addCircleOnView(View view, View.OnClickListener onClickListener, float additionalRadiusRatio) {
+        Rect rect = new Rect();
+        view.getGlobalVisibleRect(rect);
+
+        int cx = rect.centerX();
+        int cy = rect.centerY() - getStatusBarHeight();
+        int radius = (int) (Math.max(rect.width(), rect.height()) / 2f * additionalRadiusRatio);
+        tutoView.addCircle(new Circle(cx, cy, radius));
+
+        addClickableView(rect, onClickListener, additionalRadiusRatio);
+
+        tutoView.postInvalidate();
+    }
+
+    private void addRoundRectOnView(View view, View.OnClickListener onClickListener, float additionalRadiusRatio) {
         Rect rect = new Rect();
         view.getGlobalVisibleRect(rect);
 

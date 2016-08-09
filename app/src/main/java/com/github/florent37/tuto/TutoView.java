@@ -7,6 +7,10 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.github.florent37.tuto.shapes.Circle;
+import com.github.florent37.tuto.shapes.RoundRect;
+import com.github.florent37.tuto.shapes.Shape;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +18,7 @@ class TutoView extends View {
 
     static final int DEFAULT_ALPHA_COLOR = 220;
     int backgroundOverlayColor = Color.argb(DEFAULT_ALPHA_COLOR, 0, 0, 0);
-    List<Circle> circles;
+    List<Shape> shapes;
 
     public TutoView(Context context) {
         super(context);
@@ -32,7 +36,11 @@ class TutoView extends View {
     }
 
     public void addCircle(Circle circle) {
-        this.circles.add(circle);
+        this.shapes.add(circle);
+    }
+
+    public void addRoundRect(RoundRect roundRect) {
+        this.shapes.add(roundRect);
     }
 
     public int getBackgroundOverlayColor() {
@@ -48,14 +56,14 @@ class TutoView extends View {
         super.onDraw(canvas);
 
         canvas.drawColor(backgroundOverlayColor);
-        for (Circle circle : circles) {
-            canvas.drawCircle(circle.getX(), circle.getY(), circle.getRadius(), circle.getPaint());
+        for (Shape shape : shapes) {
+            shape.drawOn(canvas);
         }
 
     }
 
     private void initialize() {
-        circles = new ArrayList<>();
+        shapes = new ArrayList<>();
 
         setDrawingCacheEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

@@ -5,29 +5,24 @@
  *
  */
 
-package com.github.florent37.tuto;
+package com.github.florent37.tuto.shapes;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 
-public class Circle {
-    private final int circleColor = Color.argb(0, 0, 0, 0);
+public class Circle extends Shape {
     private int x;
     private int y;
     private int radius;
-    private Paint paint;
 
     public Circle(int x, int y, int radius) {
+        super();
         this.x = x;
         this.y = y;
         this.radius = radius;
-        this.paint = new Paint();
-
-        this.paint = new Paint();
-        this.paint.setColor(circleColor);
-        this.paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
     }
 
     public int getX() {
@@ -54,15 +49,8 @@ public class Circle {
         this.radius = radius;
     }
 
-    public Paint getPaint() {
-        return paint;
-    }
-
-    public void setPaint(Paint paint) {
-        this.paint = paint;
-    }
-
-    public int getCircleColor() {
-        return circleColor;
+    @Override
+    public void drawOn(Canvas canvas) {
+        canvas.drawCircle(getX(), getY(), getRadius(), getPaint());
     }
 }
