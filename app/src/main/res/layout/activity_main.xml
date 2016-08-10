@@ -11,16 +11,17 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"/>
 
-    <ImageView
+    <TextView
         android:id="@+id/importantView"
+        android:text="highlight this text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="50dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_notifications_black_24dp"/>
+        android:layout_alignParentRight="true" />
 
     <Button
+        android:id="@+id/display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

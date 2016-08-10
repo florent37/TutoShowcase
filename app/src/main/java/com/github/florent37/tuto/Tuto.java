@@ -28,6 +28,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 
 import com.github.florent37.tuto.shapes.Circle;
+import com.github.florent37.tuto.shapes.RoundRect;
 
 public final class Tuto {
 
@@ -49,7 +50,7 @@ public final class Tuto {
                 ViewGroup content = (ViewGroup) decorView.findViewById(android.R.id.content);
                 if (content != null) {
                     content.addView(container, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                  this.container.addView(tutoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    this.container.addView(tutoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 }
             }
         }
@@ -75,18 +76,18 @@ public final class Tuto {
 
     public void dismiss() {
         ViewCompat.animate(container)
-            .alpha(0f)
-            .setDuration(container.getResources().getInteger(android.R.integer.config_mediumAnimTime))
-            .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(View view) {
-                    super.onAnimationEnd(view);
-                    ViewParent parent = view.getParent();
-                    if (parent instanceof ViewGroup) {
-                        ((ViewGroup) parent).removeView(view);
+                .alpha(0f)
+                .setDuration(container.getResources().getInteger(android.R.integer.config_mediumAnimTime))
+                .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(View view) {
+                        super.onAnimationEnd(view);
+                        ViewParent parent = view.getParent();
+                        if (parent instanceof ViewGroup) {
+                            ((ViewGroup) parent).removeView(view);
+                        }
                     }
-                }
-            }).start();
+                }).start();
 
     }
 
@@ -117,6 +118,33 @@ public final class Tuto {
         return this;
     }
 
+    public Tuto addRoundRect(final View view, final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
+        if (view != null) {
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    addRoundRectOnView(view, onClickListener, additionalRadiusRatio);
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+        }
+        return this;
+    }
+
+    public Tuto addRoundRect(View view, View.OnClickListener onClickListener) {
+        return addRoundRect(view, onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
+    }
+
+    public Tuto addRoundRect(@IdRes final int viewId, View.OnClickListener onClickListener) {
+        return addRoundRect(viewId, onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
+    }
+
+    public Tuto addRoundRect(@IdRes int viewId, View.OnClickListener onClickListener, float additionalRadiusRatio) {
+        addRoundRectDelayed(viewId, onClickListener, additionalRadiusRatio);
+        return this;
+    }
+
     public Tuto withDismissView(@IdRes int viewId) {
         View view = container.findViewById(viewId);
         if (view != null) {
@@ -141,9 +169,9 @@ public final class Tuto {
     public Tuto show() {
         container.setVisibility(View.VISIBLE);
         ViewCompat.animate(container)
-            .alpha(1f)
-            .setDuration(container.getResources().getInteger(android.R.integer.config_longAnimTime))
-            .start();
+                .alpha(1f)
+                .setDuration(container.getResources().getInteger(android.R.integer.config_longAnimTime))
+                .start();
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,7 +206,7 @@ public final class Tuto {
             public void run() {
                 Context context = tutoView.getContext();
                 if (context instanceof Activity) {
-                    final View view = ((Activity)context).findViewById(viewId);
+                    final View view = ((Activity) context).findViewById(viewId);
                     addCircleOnView(view, onClickListener, additionalRadiusRatio);
                 }
             }
@@ -191,7 +219,7 @@ public final class Tuto {
             public void run() {
                 Context context = tutoView.getContext();
                 if (context instanceof Activity) {
-                    final View view = ((Activity)context).findViewById(viewId);
+                    final View view = ((Activity) context).findViewById(viewId);
                     addRoundRectOnView(view, onClickListener, additionalRadiusRatio);
                 }
             }
@@ -216,13 +244,17 @@ public final class Tuto {
         Rect rect = new Rect();
         view.getGlobalVisibleRect(rect);
 
-        int cx = rect.centerX();
-        int cy = rect.centerY() - getStatusBarHeight();
-        int radius = (int) (Math.max(rect.width(), rect.height()) / 2f * additionalRadiusRatio);
-        tutoView.addCircle(new Circle(cx, cy, radius));
+        int padding = 40;
 
+        final int x = rect.left - padding;
+        final int y = rect.top - getStatusBarHeight() - padding;
+        final int width = rect.width() + 2 * padding;
+        final int height = rect.height() + 2 * padding;
+        final float ry = height / 2f;
+        final float rx = ry;
+
+        tutoView.addRoundRect(new RoundRect(x, y, width, height, rx, ry));
         addClickableView(rect, onClickListener, additionalRadiusRatio);
-
         tutoView.postInvalidate();
     }
 

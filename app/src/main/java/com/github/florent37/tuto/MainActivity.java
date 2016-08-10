@@ -13,6 +13,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
+        findViewById(R.id.display).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayTuto();
+            }
+        });
     }
 
     @Override
@@ -21,13 +28,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-
+    protected void displayTuto() {
         Tuto.from(this)
             .setContentView(R.layout.tuto_sample)
-            .addCircle(R.id.importantView, null)
             .addRoundRect(R.id.importantView, null)
             .addCircle(R.id.about, new View.OnClickListener() {
                 @Override

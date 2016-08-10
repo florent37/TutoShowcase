@@ -16,7 +16,7 @@ import java.util.List;
 
 class TutoView extends View {
 
-    static final int DEFAULT_ALPHA_COLOR = 220;
+    static final int DEFAULT_ALPHA_COLOR = 200;
     int backgroundOverlayColor = Color.argb(DEFAULT_ALPHA_COLOR, 0, 0, 0);
     List<Shape> shapes;
 
