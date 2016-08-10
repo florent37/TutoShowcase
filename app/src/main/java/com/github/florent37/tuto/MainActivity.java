@@ -30,14 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
     protected void displayTuto() {
         Tuto.from(this)
-            .setContentView(R.layout.tuto_sample)
-            .addRoundRect(R.id.importantView, null)
-            .addCircle(R.id.about, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                .setContentView(R.layout.tuto_sample)
+                // .addRoundRect(R.id.importantView, null)
+                .displaySwipableLeft(R.id.swipable, true)
+                .addCircle(R.id.about, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                }
-            })
-            .show();
+                    }
+                })
+                .show();
     }
 }

@@ -20,11 +20,18 @@
         android:layout_margin="50dp"
         android:layout_alignParentRight="true" />
 
+    <View
+        android:id="@+id/swipable"
+        android:background="#333"
+        android:layout_below="@+id/display"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="50dp" />
+
     <Button
         android:id="@+id/display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="100dp"
         android:text="Display"/>
 </RelativeLayout>

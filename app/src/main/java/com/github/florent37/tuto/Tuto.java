@@ -17,6 +17,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.view.LayoutInflater;
@@ -25,7 +26,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.github.florent37.tuto.shapes.Circle;
 import com.github.florent37.tuto.shapes.RoundRect;
@@ -204,11 +207,7 @@ public final class Tuto {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Context context = tutoView.getContext();
-                if (context instanceof Activity) {
-                    final View view = ((Activity) context).findViewById(viewId);
-                    addCircleOnView(view, onClickListener, additionalRadiusRatio);
-                }
+                addCircleOnView(findViewById(viewId), onClickListener, additionalRadiusRatio);
             }
         }, SAFE_DELAY_UNTIL_INFLATED);
     }
@@ -217,11 +216,7 @@ public final class Tuto {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Context context = tutoView.getContext();
-                if (context instanceof Activity) {
-                    final View view = ((Activity) context).findViewById(viewId);
-                    addRoundRectOnView(view, onClickListener, additionalRadiusRatio);
-                }
+                addRoundRectOnView(findViewById(viewId), onClickListener, additionalRadiusRatio);
             }
         }, SAFE_DELAY_UNTIL_INFLATED);
     }
@@ -270,5 +265,111 @@ public final class Tuto {
         view.setOnClickListener(onClickListener);
         container.addView(view);
         container.invalidate();
+    }
+
+    public Tuto displayScrollable(@IdRes int viewId, boolean animated) {
+        displayScrollable(findViewById(viewId), animated);
+        return this;
+    }
+
+    @Nullable
+    private View findViewById(@IdRes int viewId) {
+        Context context = tutoView.getContext();
+        View view = null;
+        if (context instanceof Activity) {
+            view = ((Activity) context).findViewById(viewId);
+        }
+        return view;
+
+    }
+
+    public Tuto displayScrollable(View view, final boolean animated) {
+        final Rect rect = new Rect();
+        view.getGlobalVisibleRect(rect);
+        final int height = rect.height();
+
+        final ImageView hand = new ImageView(tutoView.getContext());
+        hand.setImageResource(R.drawable.finger_moving_down);
+        hand.setLayoutParams(new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        hand.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                int x = (int) (rect.centerX() - hand.getWidth() / 2f);
+                int y = (int) (rect.centerY() - hand.getHeight() / 2f);
+
+                ViewCompat.setTranslationY(hand, y);
+                ViewCompat.setTranslationX(hand, x);
+
+                if (animated)
+                    ViewCompat.animate(hand).translationY(y + height * 0.8f).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
+
+                hand.getViewTreeObserver().removeOnPreDrawListener(this);
+                return false;
+            }
+        });
+
+        container.addView(hand);
+        container.invalidate();
+
+        return this;
+    }
+
+    public Tuto displaySwipableLeft(@IdRes int viewId, final boolean animated) {
+        return displaySwipable(findViewById(viewId), true, animated);
+    }
+
+    public Tuto displaySwipableRight(@IdRes int viewId, final boolean animated) {
+        return displaySwipable(findViewById(viewId), false, animated);
+    }
+
+    public Tuto displaySwipableLeft(View view, final boolean animated) {
+        return displaySwipable(view, true, animated);
+    }
+
+    public Tuto displaySwipableRight(View view, final boolean animated) {
+        return displaySwipable(view, false, animated);
+    }
+
+    private Tuto displaySwipable(View view, final boolean left, final boolean animated) {
+        final Rect rect = new Rect();
+        view.getGlobalVisibleRect(rect);
+
+        final ImageView hand = new ImageView(tutoView.getContext());
+        if(left) {
+            hand.setImageResource(R.drawable.finger_moving_left);
+        } else {
+            hand.setImageResource(R.drawable.finger_moving_right);
+        }
+        hand.setLayoutParams(new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        hand.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                int x = (int) (rect.centerX() - hand.getWidth() / 2f);
+                int y = (int) (rect.centerY() - hand.getHeight() / 2f);
+
+                ViewCompat.setTranslationY(hand, y);
+                ViewCompat.setTranslationX(hand, x);
+
+                if (animated) {
+                    float tX;
+                    if(left){
+                        tX = rect.left;
+                    } else {
+                        tX = rect.left + rect.width() * 0.7f;
+                    }
+                    ViewCompat.animate(hand).translationX(tX).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
+                }
+
+                hand.getViewTreeObserver().removeOnPreDrawListener(this);
+                return false;
+            }
+        });
+
+        container.addView(hand);
+        container.invalidate();
+
+        return this;
     }
 }
