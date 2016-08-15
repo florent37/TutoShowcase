@@ -31,14 +31,27 @@ public class MainActivity extends AppCompatActivity {
     protected void displayTuto() {
         Tuto.from(this)
                 .setContentView(R.layout.tuto_sample)
-                // .addRoundRect(R.id.importantView, null)
-                .displaySwipableLeft(R.id.swipable, true)
-                .addCircle(R.id.about, new View.OnClickListener() {
+
+                .on(R.id.about)
+                .addCircle(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View view) {
 
                     }
                 })
+
+                .on(R.id.swipable)
+                .displaySwipableRight()
+                .animated(true)
+
+                .on(R.id.importantView)
+                .addRoundRect(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
+
                 .show();
     }
 }

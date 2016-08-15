@@ -36,7 +36,6 @@ import com.github.florent37.tuto.shapes.RoundRect;
 public final class Tuto {
 
     public static final float DEFAULT_ADDITIONAL_RADIUS_RATIO = 1.5f;
-    public static final int SAFE_DELAY_UNTIL_INFLATED = 100;
     private static final String SHARED_TUTO = "SHARED_TUTO";
     private FrameLayout container;
     private TutoView tutoView;
@@ -94,59 +93,6 @@ public final class Tuto {
 
     }
 
-    public Tuto addCircle(final View view, final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
-        if (view != null) {
-            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    addCircleOnView(view, onClickListener, additionalRadiusRatio);
-                    view.getViewTreeObserver().removeOnPreDrawListener(this);
-                    return false;
-                }
-            });
-        }
-        return this;
-    }
-
-    public Tuto addCircle(View view, View.OnClickListener onClickListener) {
-        return addCircle(view, onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
-    }
-
-    public Tuto addCircle(@IdRes final int viewId, View.OnClickListener onClickListener) {
-        return addCircle(viewId, onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
-    }
-
-    public Tuto addCircle(@IdRes int viewId, View.OnClickListener onClickListener, float additionalRadiusRatio) {
-        addCircleDelayed(viewId, onClickListener, additionalRadiusRatio);
-        return this;
-    }
-
-    public Tuto addRoundRect(final View view, final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
-        if (view != null) {
-            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    addRoundRectOnView(view, onClickListener, additionalRadiusRatio);
-                    view.getViewTreeObserver().removeOnPreDrawListener(this);
-                    return false;
-                }
-            });
-        }
-        return this;
-    }
-
-    public Tuto addRoundRect(View view, View.OnClickListener onClickListener) {
-        return addRoundRect(view, onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
-    }
-
-    public Tuto addRoundRect(@IdRes final int viewId, View.OnClickListener onClickListener) {
-        return addRoundRect(viewId, onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
-    }
-
-    public Tuto addRoundRect(@IdRes int viewId, View.OnClickListener onClickListener, float additionalRadiusRatio) {
-        addRoundRectDelayed(viewId, onClickListener, additionalRadiusRatio);
-        return this;
-    }
 
     public Tuto withDismissView(@IdRes int viewId) {
         View view = container.findViewById(viewId);
@@ -192,86 +138,6 @@ public final class Tuto {
         return this;
     }
 
-    private int getStatusBarHeight() {
-        int result = 0;
-        Context context = tutoView.getContext();
-        Resources resources = context.getResources();
-        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = resources.getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
-    private void addCircleDelayed(@IdRes final int viewId, final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                addCircleOnView(findViewById(viewId), onClickListener, additionalRadiusRatio);
-            }
-        }, SAFE_DELAY_UNTIL_INFLATED);
-    }
-
-    private void addRoundRectDelayed(@IdRes final int viewId, final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                addRoundRectOnView(findViewById(viewId), onClickListener, additionalRadiusRatio);
-            }
-        }, SAFE_DELAY_UNTIL_INFLATED);
-    }
-
-    private void addCircleOnView(View view, View.OnClickListener onClickListener, float additionalRadiusRatio) {
-        Rect rect = new Rect();
-        view.getGlobalVisibleRect(rect);
-
-        int cx = rect.centerX();
-        int cy = rect.centerY() - getStatusBarHeight();
-        int radius = (int) (Math.max(rect.width(), rect.height()) / 2f * additionalRadiusRatio);
-        tutoView.addCircle(new Circle(cx, cy, radius));
-
-        addClickableView(rect, onClickListener, additionalRadiusRatio);
-
-        tutoView.postInvalidate();
-    }
-
-    private void addRoundRectOnView(View view, View.OnClickListener onClickListener, float additionalRadiusRatio) {
-        Rect rect = new Rect();
-        view.getGlobalVisibleRect(rect);
-
-        int padding = 40;
-
-        final int x = rect.left - padding;
-        final int y = rect.top - getStatusBarHeight() - padding;
-        final int width = rect.width() + 2 * padding;
-        final int height = rect.height() + 2 * padding;
-        final float ry = height / 2f;
-        final float rx = ry;
-
-        tutoView.addRoundRect(new RoundRect(x, y, width, height, rx, ry));
-        addClickableView(rect, onClickListener, additionalRadiusRatio);
-        tutoView.postInvalidate();
-    }
-
-    private void addClickableView(Rect rect, View.OnClickListener onClickListener, float additionalRadiusRatio) {
-        View view = new View(tutoView.getContext());
-        int width = (int) (rect.width() * additionalRadiusRatio);
-        int height = (int) (rect.height() * additionalRadiusRatio);
-        int x = rect.left - (width - rect.width()) / 2;
-        int y = rect.top - (height - rect.height()) / 2 - getStatusBarHeight();
-        view.setLayoutParams(new ViewGroup.MarginLayoutParams(width, height));
-        ViewCompat.setTranslationY(view, y);
-        ViewCompat.setTranslationX(view, x);
-        view.setOnClickListener(onClickListener);
-        container.addView(view);
-        container.invalidate();
-    }
-
-    public Tuto displayScrollable(@IdRes int viewId, boolean animated) {
-        displayScrollable(findViewById(viewId), animated);
-        return this;
-    }
-
     @Nullable
     private View findViewById(@IdRes int viewId) {
         Context context = tutoView.getContext();
@@ -283,93 +149,251 @@ public final class Tuto {
 
     }
 
-    public Tuto displayScrollable(View view, final boolean animated) {
-        final Rect rect = new Rect();
-        view.getGlobalVisibleRect(rect);
-        final int height = rect.height();
-
-        final ImageView hand = new ImageView(tutoView.getContext());
-        hand.setImageResource(R.drawable.finger_moving_down);
-        hand.setLayoutParams(new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        hand.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                int x = (int) (rect.centerX() - hand.getWidth() / 2f);
-                int y = (int) (rect.centerY() - hand.getHeight() / 2f);
-
-                ViewCompat.setTranslationY(hand, y);
-                ViewCompat.setTranslationX(hand, x);
-
-                if (animated)
-                    ViewCompat.animate(hand).translationY(y + height * 0.8f).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
-
-                hand.getViewTreeObserver().removeOnPreDrawListener(this);
-                return false;
-            }
-        });
-
-        container.addView(hand);
-        container.invalidate();
-
-        return this;
+    public ViewActions on(@IdRes int viewId) {
+        return new ViewActions(this, findViewById(viewId));
     }
 
-    public Tuto displaySwipableLeft(@IdRes int viewId, final boolean animated) {
-        return displaySwipable(findViewById(viewId), true, animated);
+    public ViewActions on(View view) {
+        return new ViewActions(this, view);
     }
 
-    public Tuto displaySwipableRight(@IdRes int viewId, final boolean animated) {
-        return displaySwipable(findViewById(viewId), false, animated);
-    }
+    public static class ViewActions {
+        private final Tuto tuto;
+        private final View view;
+        private boolean animated = true;
 
-    public Tuto displaySwipableLeft(View view, final boolean animated) {
-        return displaySwipable(view, true, animated);
-    }
-
-    public Tuto displaySwipableRight(View view, final boolean animated) {
-        return displaySwipable(view, false, animated);
-    }
-
-    private Tuto displaySwipable(View view, final boolean left, final boolean animated) {
-        final Rect rect = new Rect();
-        view.getGlobalVisibleRect(rect);
-
-        final ImageView hand = new ImageView(tutoView.getContext());
-        if(left) {
-            hand.setImageResource(R.drawable.finger_moving_left);
-        } else {
-            hand.setImageResource(R.drawable.finger_moving_right);
+        public ViewActions(final Tuto tuto, View view) {
+            this.tuto = tuto;
+            this.view = view;
         }
-        hand.setLayoutParams(new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        hand.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                int x = (int) (rect.centerX() - hand.getWidth() / 2f);
-                int y = (int) (rect.centerY() - hand.getHeight() / 2f);
+        public ViewActions animated(boolean animated) {
+            this.animated = animated;
+            return this;
+        }
 
-                ViewCompat.setTranslationY(hand, y);
-                ViewCompat.setTranslationX(hand, x);
+        public ViewActions on(@IdRes int viewId) {
+            return tuto.on(viewId);
+        }
 
-                if (animated) {
-                    float tX;
-                    if(left){
-                        tX = rect.left;
-                    } else {
-                        tX = rect.left + rect.width() * 0.7f;
-                    }
-                    ViewCompat.animate(hand).translationX(tX).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
-                }
+        public ViewActions on(View view) {
+            return tuto.on(view);
+        }
 
-                hand.getViewTreeObserver().removeOnPreDrawListener(this);
-                return false;
+        public Tuto show() {
+            return tuto.show();
+        }
+
+
+        private ViewActions displaySwipable(final boolean left) {
+            final Rect rect = new Rect();
+            view.getGlobalVisibleRect(rect);
+
+            final ImageView hand = new ImageView(view.getContext());
+            if (left) {
+                hand.setImageResource(R.drawable.finger_moving_left);
+            } else {
+                hand.setImageResource(R.drawable.finger_moving_right);
             }
-        });
+            hand.setLayoutParams(new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        container.addView(hand);
-        container.invalidate();
+            hand.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    int x = (int) (rect.centerX() - hand.getWidth() / 2f);
+                    int y = (int) (rect.centerY() - hand.getHeight() / 2f);
 
-        return this;
+                    ViewCompat.setTranslationY(hand, y);
+                    ViewCompat.setTranslationX(hand, x);
+
+                    if (animated) {
+                        float tX;
+                        if (left) {
+                            tX = rect.left;
+                        } else {
+                            tX = rect.left + rect.width() * 0.7f;
+                        }
+                        ViewCompat.animate(hand).translationX(tX).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
+                    }
+
+                    hand.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+
+            tuto.container.addView(hand);
+            tuto.container.invalidate();
+
+            return this;
+        }
+
+        public ViewActions displaySwipableLeft() {
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    displaySwipable(true);
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+            return this;
+        }
+
+        public ViewActions displaySwipableRight() {
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    displaySwipable(false);
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+            return this;
+        }
+
+        private ViewActions displayScrollable() {
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    displayScrollableOnView();
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+            return this;
+        }
+
+        private ViewActions displayScrollableOnView() {
+            final Rect rect = new Rect();
+            view.getGlobalVisibleRect(rect);
+            final int height = rect.height();
+
+            final ImageView hand = new ImageView(view.getContext());
+            hand.setImageResource(R.drawable.finger_moving_down);
+            hand.setLayoutParams(new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            hand.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    int x = (int) (rect.centerX() - hand.getWidth() / 2f);
+                    int y = (int) (rect.centerY() - hand.getHeight() / 2f);
+
+                    ViewCompat.setTranslationY(hand, y);
+                    ViewCompat.setTranslationX(hand, x);
+
+                    if (animated)
+                        ViewCompat.animate(hand).translationY(y + height * 0.8f).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
+
+                    hand.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+
+            tuto.container.addView(hand);
+            tuto.container.invalidate();
+
+            return this;
+        }
+
+
+        private ViewActions addCircleOnView(@Nullable View.OnClickListener onClickListener, float additionalRadiusRatio) {
+            Rect rect = new Rect();
+            view.getGlobalVisibleRect(rect);
+
+            int cx = rect.centerX();
+            int cy = rect.centerY() - getStatusBarHeight();
+            int radius = (int) (Math.max(rect.width(), rect.height()) / 2f * additionalRadiusRatio);
+            tuto.tutoView.addCircle(new Circle(cx, cy, radius));
+
+            addClickableView(rect, onClickListener, additionalRadiusRatio);
+
+            tuto.tutoView.postInvalidate();
+            return this;
+        }
+
+        public ViewActions addRoundRect() {
+            return addRoundRect(null);
+        }
+
+        public ViewActions addRoundRect(@Nullable final View.OnClickListener onClickListener) {
+            return addRoundRect(onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
+        }
+
+        public ViewActions addRoundRect(@Nullable final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    addRoundRectOnView(onClickListener, additionalRadiusRatio);
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+            return this;
+        }
+
+        public ViewActions addCircle(final View.OnClickListener onClickListener) {
+            return addCircle(onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
+        }
+
+        public ViewActions addCircle() {
+            return addCircle(null);
+        }
+
+        public ViewActions addCircle(final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    addCircleOnView(onClickListener, additionalRadiusRatio);
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+            return this;
+        }
+
+        private void addRoundRectOnView(@Nullable View.OnClickListener onClickListener, float additionalRadiusRatio) {
+            Rect rect = new Rect();
+            view.getGlobalVisibleRect(rect);
+
+            int padding = 40;
+
+            final int x = rect.left - padding;
+            final int y = rect.top - getStatusBarHeight() - padding;
+            final int width = rect.width() + 2 * padding;
+            final int height = rect.height() + 2 * padding;
+            final float ry = height / 2f;
+            final float rx = ry;
+
+            tuto.tutoView.addRoundRect(new RoundRect(x, y, width, height, rx, ry));
+            addClickableView(rect, onClickListener, additionalRadiusRatio);
+            tuto.tutoView.postInvalidate();
+        }
+
+        private int getStatusBarHeight() {
+            int result = 0;
+            Context context = view.getContext();
+            Resources resources = context.getResources();
+            int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                result = resources.getDimensionPixelSize(resourceId);
+            }
+            return result;
+        }
+
+        private void addClickableView(Rect rect, View.OnClickListener onClickListener, float additionalRadiusRatio) {
+            View cliclableView = new View(this.view.getContext());
+            int width = (int) (rect.width() * additionalRadiusRatio);
+            int height = (int) (rect.height() * additionalRadiusRatio);
+            int x = rect.left - (width - rect.width()) / 2;
+            int y = rect.top - (height - rect.height()) / 2 - getStatusBarHeight();
+            cliclableView.setLayoutParams(new ViewGroup.MarginLayoutParams(width, height));
+            ViewCompat.setTranslationY(cliclableView, y);
+            ViewCompat.setTranslationX(cliclableView, x);
+            cliclableView.setOnClickListener(onClickListener);
+            tuto.container.addView(cliclableView);
+            tuto.container.invalidate();
+        }
+
     }
+
 }
