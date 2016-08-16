@@ -161,15 +161,12 @@ public final class Tuto {
         private final Tuto tuto;
         private final View view;
         private boolean animated = true;
+        @Nullable
+        private View.OnClickListener onClickListener;
 
         public ViewActions(final Tuto tuto, View view) {
             this.tuto = tuto;
             this.view = view;
-        }
-
-        public ViewActions animated(boolean animated) {
-            this.animated = animated;
-            return this;
         }
 
         public ViewActions on(@IdRes int viewId) {
@@ -185,7 +182,7 @@ public final class Tuto {
         }
 
 
-        private ViewActions displaySwipable(final boolean left) {
+        private void displaySwipable(final boolean left) {
             final Rect rect = new Rect();
             view.getGlobalVisibleRect(rect);
 
@@ -223,11 +220,9 @@ public final class Tuto {
 
             tuto.container.addView(hand);
             tuto.container.invalidate();
-
-            return this;
         }
 
-        public ViewActions displaySwipableLeft() {
+        public ViewActionsEditor displaySwipableLeft() {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -236,10 +231,10 @@ public final class Tuto {
                     return false;
                 }
             });
-            return this;
+            return new ViewActionsEditor(this);
         }
 
-        public ViewActions displaySwipableRight() {
+        public ViewActionsEditor displaySwipableRight() {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -248,10 +243,10 @@ public final class Tuto {
                     return false;
                 }
             });
-            return this;
+            return new ViewActionsEditor(this);
         }
 
-        private ViewActions displayScrollable() {
+        private void displayScrollable() {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -260,10 +255,9 @@ public final class Tuto {
                     return false;
                 }
             });
-            return this;
         }
 
-        private ViewActions displayScrollableOnView() {
+        private ViewActionsEditor displayScrollableOnView() {
             final Rect rect = new Rect();
             view.getGlobalVisibleRect(rect);
             final int height = rect.height();
@@ -292,11 +286,11 @@ public final class Tuto {
             tuto.container.addView(hand);
             tuto.container.invalidate();
 
-            return this;
+            return new ViewActionsEditor(this);
         }
 
 
-        private ViewActions addCircleOnView(@Nullable View.OnClickListener onClickListener, float additionalRadiusRatio) {
+        private void addCircleOnView(float additionalRadiusRatio) {
             Rect rect = new Rect();
             view.getGlobalVisibleRect(rect);
 
@@ -308,50 +302,41 @@ public final class Tuto {
             addClickableView(rect, onClickListener, additionalRadiusRatio);
 
             tuto.tutoView.postInvalidate();
-            return this;
         }
 
-        public ViewActions addRoundRect() {
-            return addRoundRect(null);
+        public ViewActionsEditor addRoundRect() {
+            return addRoundRect(DEFAULT_ADDITIONAL_RADIUS_RATIO);
         }
 
-        public ViewActions addRoundRect(@Nullable final View.OnClickListener onClickListener) {
-            return addRoundRect(onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
-        }
-
-        public ViewActions addRoundRect(@Nullable final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
+        public ViewActionsEditor addRoundRect(final float additionalRadiusRatio) {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
-                    addRoundRectOnView(onClickListener, additionalRadiusRatio);
+                    addRoundRectOnView(additionalRadiusRatio);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     return false;
                 }
             });
-            return this;
+            return new ViewActionsEditor(this);
         }
 
-        public ViewActions addCircle(final View.OnClickListener onClickListener) {
-            return addCircle(onClickListener, DEFAULT_ADDITIONAL_RADIUS_RATIO);
+        public ViewActionsEditor addCircle() {
+            return addCircle(DEFAULT_ADDITIONAL_RADIUS_RATIO);
         }
 
-        public ViewActions addCircle() {
-            return addCircle(null);
-        }
-
-        public ViewActions addCircle(final View.OnClickListener onClickListener, final float additionalRadiusRatio) {
+        public ViewActionsEditor addCircle(final float additionalRadiusRatio) {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
-                    addCircleOnView(onClickListener, additionalRadiusRatio);
+                    addCircleOnView(additionalRadiusRatio);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     return false;
                 }
             });
-            return this;
+            return new ViewActionsEditor(this);
         }
 
-        private void addRoundRectOnView(@Nullable View.OnClickListener onClickListener, float additionalRadiusRatio) {
+        private void addRoundRectOnView(float additionalRadiusRatio) {
             Rect rect = new Rect();
             view.getGlobalVisibleRect(rect);
 
@@ -392,6 +377,37 @@ public final class Tuto {
             cliclableView.setOnClickListener(onClickListener);
             tuto.container.addView(cliclableView);
             tuto.container.invalidate();
+        }
+
+    }
+
+    static class ViewActionsEditor {
+        private final ViewActions viewActions;
+
+        public ViewActionsEditor(ViewActions viewActions) {
+            this.viewActions = viewActions;
+        }
+
+        public ViewActionsEditor animated(boolean animated) {
+            this.viewActions.animated = animated;
+            return this;
+        }
+
+        public ViewActionsEditor onClick(View.OnClickListener onClickListener){
+            this.viewActions.onClickListener = onClickListener;
+            return this;
+        }
+
+        public ViewActions on(@IdRes int viewId) {
+            return viewActions.on(viewId);
+        }
+
+        public ViewActions on(View view) {
+            return viewActions.on(view);
+        }
+
+        public Tuto show() {
+            return viewActions.show();
         }
 
     }

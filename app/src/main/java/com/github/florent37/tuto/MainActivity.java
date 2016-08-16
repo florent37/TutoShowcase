@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
                 .setContentView(R.layout.tuto_sample)
 
                 .on(R.id.about)
-                .addCircle(new View.OnClickListener() {
+                .addCircle()
+                .onClick(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
 
                     }
                 })
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
                 .animated(true)
 
                 .on(R.id.importantView)
-                .addRoundRect(new View.OnClickListener() {
+                .addRoundRect()
+                .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
