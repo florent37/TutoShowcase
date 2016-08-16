@@ -6,6 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 
+import com.github.florent37.tutoshowcase.TutoShowcase;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void displayTuto() {
-        Tuto.from(this)
+        TutoShowcase.from(this)
                 .setContentView(R.layout.tuto_sample)
 
                 .on(R.id.about)

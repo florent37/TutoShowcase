@@ -1,4 +1,4 @@
-package com.github.florent37.tuto.shapes;
+package com.github.florent37.tutoshowcase.shapes;
 
 import android.graphics.Canvas;
 import android.graphics.Path;

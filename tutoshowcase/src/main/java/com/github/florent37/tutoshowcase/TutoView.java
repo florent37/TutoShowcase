@@ -1,4 +1,4 @@
-package com.github.florent37.tuto;
+package com.github.florent37.tutoshowcase;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,9 +7,9 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.github.florent37.tuto.shapes.Circle;
-import com.github.florent37.tuto.shapes.RoundRect;
-import com.github.florent37.tuto.shapes.Shape;
+import com.github.florent37.tutoshowcase.shapes.Circle;
+import com.github.florent37.tutoshowcase.shapes.RoundRect;
+import com.github.florent37.tutoshowcase.shapes.Shape;
 
 import java.util.ArrayList;
 import java.util.List;

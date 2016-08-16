@@ -5,14 +5,13 @@
  *
  */
 
-package com.github.florent37.tuto;
+package com.github.florent37.tutoshowcase;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -30,10 +29,11 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.github.florent37.tuto.shapes.Circle;
-import com.github.florent37.tuto.shapes.RoundRect;
+import com.example.tutoshowcase.R;
+import com.github.florent37.tutoshowcase.shapes.Circle;
+import com.github.florent37.tutoshowcase.shapes.RoundRect;
 
-public final class Tuto {
+public final class TutoShowcase {
 
     public static final float DEFAULT_ADDITIONAL_RADIUS_RATIO = 1.5f;
     private static final String SHARED_TUTO = "SHARED_TUTO";
@@ -41,7 +41,7 @@ public final class Tuto {
     private TutoView tutoView;
     private SharedPreferences sharedPreferences;
 
-    private Tuto(@NonNull Activity activity) {
+    private TutoShowcase(@NonNull Activity activity) {
         this.sharedPreferences = activity.getSharedPreferences(SHARED_TUTO, Context.MODE_PRIVATE);
         this.container = new FrameLayout(activity);
         this.tutoView = new TutoView(activity);
@@ -61,16 +61,16 @@ public final class Tuto {
     }
 
     @NonNull
-    public static Tuto from(@NonNull Activity activity) {
-        return new Tuto(activity);
+    public static TutoShowcase from(@NonNull Activity activity) {
+        return new TutoShowcase(activity);
     }
 
-    public Tuto setBackgroundColor(@ColorInt int color) {
+    public TutoShowcase setBackgroundColor(@ColorInt int color) {
         tutoView.setBackgroundOverlayColor(color);
         return this;
     }
 
-    public Tuto setContentView(@LayoutRes int content) {
+    public TutoShowcase setContentView(@LayoutRes int content) {
         View child = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
         container.addView(child, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return this;
@@ -94,7 +94,7 @@ public final class Tuto {
     }
 
 
-    public Tuto withDismissView(@IdRes int viewId) {
+    public TutoShowcase withDismissView(@IdRes int viewId) {
         View view = container.findViewById(viewId);
         if (view != null) {
             view.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +107,7 @@ public final class Tuto {
         return this;
     }
 
-    public Tuto onClick(int id, View.OnClickListener onClickListener) {
+    public TutoShowcase onClick(int id, View.OnClickListener onClickListener) {
         View view = container.findViewById(id);
         if (view != null) {
             view.setOnClickListener(onClickListener);
@@ -115,7 +115,7 @@ public final class Tuto {
         return this;
     }
 
-    public Tuto show() {
+    public TutoShowcase show() {
         container.setVisibility(View.VISIBLE);
         ViewCompat.animate(container)
                 .alpha(1f)
@@ -130,11 +130,16 @@ public final class Tuto {
         return this;
     }
 
-    public Tuto showOnce(String key) {
+    public TutoShowcase showOnce(String key) {
         if (!sharedPreferences.contains(key)) {
             show();
             sharedPreferences.edit().putString(key, key).apply();
         }
+        return this;
+    }
+
+    public TutoShowcase resetTutorial(String key) {
+        sharedPreferences.edit().remove(key).apply();
         return this;
     }
 
@@ -158,27 +163,27 @@ public final class Tuto {
     }
 
     public static class ViewActions {
-        private final Tuto tuto;
+        private final TutoShowcase tutoShowcase;
         private final View view;
         private boolean animated = true;
         @Nullable
         private View.OnClickListener onClickListener;
 
-        public ViewActions(final Tuto tuto, View view) {
-            this.tuto = tuto;
+        public ViewActions(final TutoShowcase tutoShowcase, View view) {
+            this.tutoShowcase = tutoShowcase;
             this.view = view;
         }
 
         public ViewActions on(@IdRes int viewId) {
-            return tuto.on(viewId);
+            return tutoShowcase.on(viewId);
         }
 
         public ViewActions on(View view) {
-            return tuto.on(view);
+            return tutoShowcase.on(view);
         }
 
-        public Tuto show() {
-            return tuto.show();
+        public TutoShowcase show() {
+            return tutoShowcase.show();
         }
 
 
@@ -218,8 +223,8 @@ public final class Tuto {
                 }
             });
 
-            tuto.container.addView(hand);
-            tuto.container.invalidate();
+            tutoShowcase.container.addView(hand);
+            tutoShowcase.container.invalidate();
         }
 
         public ViewActionsEditor displaySwipableLeft() {
@@ -284,8 +289,8 @@ public final class Tuto {
                 }
             });
 
-            tuto.container.addView(hand);
-            tuto.container.invalidate();
+            tutoShowcase.container.addView(hand);
+            tutoShowcase.container.invalidate();
 
             return new ViewActionsEditor(this);
         }
@@ -298,11 +303,11 @@ public final class Tuto {
             int cx = rect.centerX();
             int cy = rect.centerY() - getStatusBarHeight();
             int radius = (int) (Math.max(rect.width(), rect.height()) / 2f * additionalRadiusRatio);
-            tuto.tutoView.addCircle(new Circle(cx, cy, radius));
+            tutoShowcase.tutoView.addCircle(new Circle(cx, cy, radius));
 
             addClickableView(rect, onClickListener, additionalRadiusRatio);
 
-            tuto.tutoView.postInvalidate();
+            tutoShowcase.tutoView.postInvalidate();
         }
 
         public ViewActionsEditor addRoundRect() {
@@ -350,9 +355,9 @@ public final class Tuto {
             final float ry = height / 2f;
             final float rx = ry;
 
-            tuto.tutoView.addRoundRect(new RoundRect(x, y, width, height, rx, ry));
+            tutoShowcase.tutoView.addRoundRect(new RoundRect(x, y, width, height, rx, ry));
             addClickableView(rect, onClickListener, additionalRadiusRatio);
-            tuto.tutoView.postInvalidate();
+            tutoShowcase.tutoView.postInvalidate();
         }
 
         private int getStatusBarHeight() {
@@ -376,16 +381,16 @@ public final class Tuto {
             ViewCompat.setTranslationY(cliclableView, y);
             ViewCompat.setTranslationX(cliclableView, x);
             cliclableView.setOnClickListener(onClickListener);
-            tuto.container.addView(cliclableView);
-            tuto.container.invalidate();
+            tutoShowcase.container.addView(cliclableView);
+            tutoShowcase.container.invalidate();
         }
 
-        public Tuto showOnce(String key) {
-            return tuto.showOnce(key);
+        public TutoShowcase showOnce(String key) {
+            return tutoShowcase.showOnce(key);
         }
     }
 
-    static class ViewActionsEditor {
+    public static class ViewActionsEditor {
         private final ViewActions viewActions;
 
         public ViewActionsEditor(ViewActions viewActions) {
@@ -397,7 +402,7 @@ public final class Tuto {
             return this;
         }
 
-        public ViewActionsEditor onClick(View.OnClickListener onClickListener){
+        public ViewActionsEditor onClick(View.OnClickListener onClickListener) {
             this.viewActions.onClickListener = onClickListener;
             return this;
         }
@@ -410,11 +415,11 @@ public final class Tuto {
             return viewActions.on(view);
         }
 
-        public Tuto show() {
+        public TutoShowcase show() {
             return viewActions.show();
         }
 
-        public Tuto showOnce(String key) {
+        public TutoShowcase showOnce(String key) {
             return viewActions.showOnce(key);
         }
     }
