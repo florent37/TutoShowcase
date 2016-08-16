@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
                 .on(R.id.about)
                 .addCircle()
+                .withBorder()
                 .onClick(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -46,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
                 .on(R.id.swipable)
                 .displaySwipableRight()
                 .animated(true)
+
+                .on(R.id.display)
+                .addRoundRect()
+                .withBorder()
 
                 .show();
     }
