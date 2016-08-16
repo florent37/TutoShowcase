@@ -11,15 +11,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"/>
 
-    <TextView
-        android:id="@+id/importantView"
-        android:text="highlight this text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="50dp"
-        android:layout_alignParentRight="true" />
-
     <View
         android:id="@+id/swipable"
         android:background="#333"

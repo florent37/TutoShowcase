@@ -45,15 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 .displaySwipableRight()
                 .animated(true)
 
-                .on(R.id.importantView)
-                .addRoundRect()
-                .onClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                })
-
                 .show();
     }
 }

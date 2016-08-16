@@ -246,7 +246,7 @@ public final class Tuto {
             return new ViewActionsEditor(this);
         }
 
-        private void displayScrollable() {
+        public ViewActionsEditor displayScrollable() {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
@@ -255,6 +255,7 @@ public final class Tuto {
                     return false;
                 }
             });
+            return new ViewActionsEditor(this);
         }
 
         private ViewActionsEditor displayScrollableOnView() {
@@ -379,6 +380,9 @@ public final class Tuto {
             tuto.container.invalidate();
         }
 
+        public Tuto showOnce(String key) {
+            return tuto.showOnce(key);
+        }
     }
 
     static class ViewActionsEditor {
@@ -410,6 +414,9 @@ public final class Tuto {
             return viewActions.show();
         }
 
+        public Tuto showOnce(String key) {
+            return viewActions.showOnce(key);
+        }
     }
 
 }
