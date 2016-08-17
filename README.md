@@ -40,7 +40,7 @@ TutoShowcase.from(this)
     .show()
 ```
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/develop/media/content.png)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/content.png)](https://github.com/florent37/TutoShowcase)
 
 # Indicators
 
@@ -53,12 +53,16 @@ You can higlight some elements to user
 .addCircle()
 ```
 
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/circle.png)](https://github.com/florent37/TutoShowcase)
+
 ## RoundRect
 
 ```java
 .on(view)
 .addRoundRect()
 ```
+
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/roundrect.png)](https://github.com/florent37/TutoShowcase)
 
 # Actions
 
@@ -73,10 +77,15 @@ Some actions can be explained to the user
 
 ## Swipable Left / Right
 
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/swipableRight.gif)](https://github.com/florent37/TutoShowcase)
+
 ```java
 .on(view)
 .displaySwipableLeft()
+```
 
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/swipableRight.gif)](https://github.com/florent37/TutoShowcase)
+```java
 .on(view)
 .displaySwipableRight()
 ```

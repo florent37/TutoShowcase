@@ -276,13 +276,13 @@ public final class TutoShowcase {
                 @Override
                 public boolean onPreDraw() {
                     int x = (int) (rect.centerX() - hand.getWidth() / 2f);
-                    int y = (int) (rect.centerY() - hand.getHeight() / 2f);
+                    int y = (int) (rect.centerY() - hand.getHeight() / 2f) - getStatusBarHeight();
 
                     ViewCompat.setTranslationY(hand, y);
                     ViewCompat.setTranslationX(hand, x);
 
                     if (animated)
-                        ViewCompat.animate(hand).translationY(y + height * 0.8f).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
+                        ViewCompat.animate(hand).translationY(y + height * 0.8f - getStatusBarHeight()).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
 
                     hand.getViewTreeObserver().removeOnPreDrawListener(this);
                     return false;
