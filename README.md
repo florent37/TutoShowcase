@@ -5,11 +5,12 @@ A simple and Elegant Showcase view for Android
 [![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/sample.png)](https://github.com/florent37/TutoShowcase)
 
 ```java
-Tuto.from(this)
+TutoShowcase.from(this)
     .setContentView(R.layout.tuto_sample)
 
     .on(R.id.about) //a view in actionbar
     .addCircle()
+    .withBorder()
     .onClick(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -29,7 +30,18 @@ You can simply limit a showcase visibility to once with `.showOnce(string)`
 
 # Content View
 
-...
+It's simple to add a content view into the TutoShowcase,
+you can for example add images or descriptions texts
+
+```java
+TutoShowcase.from(this)
+    .setContentView(R.layout.tuto_sample)
+    ...
+    .show()
+``
+
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/content_view.png)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/sample_without_frame.png)](https://github.com/florent37/TutoShowcase)
 
 # Indicators
 
