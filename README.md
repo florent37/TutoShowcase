@@ -2,6 +2,8 @@
 
 A simple and Elegant Showcase view for Android
 
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/screens/sample_small.png)](https://github.com/florent37/TutoShowCase)
+
 ```java
 Tuto.from(this)
     .setContentView(R.layout.tuto_sample)

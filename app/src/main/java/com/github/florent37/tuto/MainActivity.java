@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 .displaySwipableRight()
                 .animated(true)
 
-                .on(R.id.display)
-                .addRoundRect()
-                .withBorder()
-
                 .show();
     }
 }
