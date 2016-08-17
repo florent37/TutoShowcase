@@ -162,17 +162,25 @@ public final class TutoShowcase {
         return new ViewActions(this, view);
     }
 
+    private static class ViewActionsSettings {
+        private boolean animated = true;
+        private boolean withBorder = false;
+        @Nullable
+        private View.OnClickListener onClickListener;
+
+        private Integer delay = 0;
+        private Integer duration = 300;
+    }
+
     public static class ViewActions {
         private final TutoShowcase tutoShowcase;
         private final View view;
-        private boolean animated = true;
-        @Nullable
-        private View.OnClickListener onClickListener;
-        private boolean withBorder = false;
+        private final ViewActionsSettings settings;
 
         public ViewActions(final TutoShowcase tutoShowcase, View view) {
             this.tutoShowcase = tutoShowcase;
             this.view = view;
+            this.settings = new ViewActionsSettings();
         }
 
         public ViewActions on(@IdRes int viewId) {
@@ -208,14 +216,17 @@ public final class TutoShowcase {
                     ViewCompat.setTranslationY(hand, y);
                     ViewCompat.setTranslationX(hand, x);
 
-                    if (animated) {
+                    if (settings.animated) {
                         float tX;
                         if (left) {
                             tX = rect.left;
                         } else {
                             tX = rect.left + rect.width() * 0.7f;
                         }
-                        ViewCompat.animate(hand).translationX(tX).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
+                        ViewCompat.animate(hand).translationX(tX)
+                                .setStartDelay(settings.delay != null ? settings.delay : 500)
+                                .setDuration(settings.duration != null ? settings.duration : 600)
+                                .setInterpolator(new DecelerateInterpolator());
                     }
 
                     hand.getViewTreeObserver().removeOnPreDrawListener(this);
@@ -281,8 +292,12 @@ public final class TutoShowcase {
                     ViewCompat.setTranslationY(hand, y);
                     ViewCompat.setTranslationX(hand, x);
 
-                    if (animated)
-                        ViewCompat.animate(hand).translationY(y + height * 0.8f - getStatusBarHeight()).setStartDelay(500).setDuration(600).setInterpolator(new DecelerateInterpolator());
+                    if (settings.animated)
+                        ViewCompat.animate(hand)
+                                .translationY(y + height * 0.8f - getStatusBarHeight())
+                                .setStartDelay(settings.delay != null ? settings.delay : 500)
+                                .setDuration(settings.duration != null ? settings.duration : 600)
+                                .setInterpolator(new DecelerateInterpolator());
 
                     hand.getViewTreeObserver().removeOnPreDrawListener(this);
                     return false;
@@ -302,10 +317,10 @@ public final class TutoShowcase {
             int cy = rect.centerY() - getStatusBarHeight();
             int radius = (int) (Math.max(rect.width(), rect.height()) / 2f * additionalRadiusRatio);
             Circle circle = new Circle(cx, cy, radius);
-            circle.setDisplayBorder(withBorder);
+            circle.setDisplayBorder(settings.withBorder);
             tutoShowcase.tutoView.addCircle(circle);
 
-            addClickableView(rect, onClickListener, additionalRadiusRatio);
+            addClickableView(rect, settings.onClickListener, additionalRadiusRatio);
 
             tutoShowcase.tutoView.postInvalidate();
         }
@@ -354,9 +369,9 @@ public final class TutoShowcase {
             final int height = rect.height() + 2 * padding;
 
             RoundRect roundRect = new RoundRect(x, y, width, height);
-            roundRect.setDisplayBorder(withBorder);
+            roundRect.setDisplayBorder(settings.withBorder);
             tutoShowcase.tutoView.addRoundRect(roundRect);
-            addClickableView(rect, onClickListener, additionalRadiusRatio);
+            addClickableView(rect, settings.onClickListener, additionalRadiusRatio);
             tutoShowcase.tutoView.postInvalidate();
         }
 
@@ -428,12 +443,12 @@ public final class TutoShowcase {
         }
 
         public ShapeViewActionsEditor withBorder() {
-            this.viewActions.withBorder = true;
+            this.viewActions.settings.withBorder = true;
             return this;
         }
 
         public ShapeViewActionsEditor onClick(View.OnClickListener onClickListener) {
-            this.viewActions.onClickListener = onClickListener;
+            this.viewActions.settings.onClickListener = onClickListener;
             return this;
         }
     }
@@ -443,8 +458,18 @@ public final class TutoShowcase {
             super(viewActions);
         }
 
+        public ActionViewActionsEditor delayed(int delay){
+            this.viewActions.settings.delay = delay;
+            return this;
+        }
+
+        public ActionViewActionsEditor duration(int duration){
+            this.viewActions.settings.duration = duration;
+            return this;
+        }
+
         public ActionViewActionsEditor animated(boolean animated) {
-            this.viewActions.animated = animated;
+            this.viewActions.settings.animated = animated;
             return this;
         }
     }
