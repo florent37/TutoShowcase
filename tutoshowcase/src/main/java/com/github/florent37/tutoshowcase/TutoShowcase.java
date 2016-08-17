@@ -107,7 +107,7 @@ public final class TutoShowcase {
         return this;
     }
 
-    public TutoShowcase onClick(int id, View.OnClickListener onClickListener) {
+    public TutoShowcase onClickContentView(int id, View.OnClickListener onClickListener) {
         View view = container.findViewById(id);
         if (view != null) {
             view.setOnClickListener(onClickListener);
@@ -388,6 +388,10 @@ public final class TutoShowcase {
         public TutoShowcase showOnce(String key) {
             return tutoShowcase.showOnce(key);
         }
+
+        public TutoShowcase onClickContentView(@IdRes int viewId, View.OnClickListener onClickListener) {
+            return tutoShowcase.onClickContentView(viewId, onClickListener);
+        }
     }
 
     public static class ViewActionsEditor {
@@ -413,6 +417,9 @@ public final class TutoShowcase {
             return viewActions.showOnce(key);
         }
 
+        public TutoShowcase onClickContentView(@IdRes int viewId, View.OnClickListener onClickListener) {
+            return viewActions.onClickContentView(viewId, onClickListener);
+        }
     }
 
     public static class ShapeViewActionsEditor extends ViewActionsEditor {

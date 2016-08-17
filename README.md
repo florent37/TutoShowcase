@@ -77,20 +77,21 @@ Some actions can be explained to the user
 
 ## Swipable Left
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeLeft.gif)](https://github.com/florent37/TutoShowcase)
-
 ```java
 .on(view)
 .displaySwipableLeft()
 ```
 
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeLeft.gif)](https://github.com/florent37/TutoShowcase)
+
 ## Swipable Right
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeRight.gif)](https://github.com/florent37/TutoShowcase)
 ```java
 .on(view)
 .displaySwipableRight()
 ```
+
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeRight.gif)](https://github.com/florent37/TutoShowcase)
 
 # Events
 
@@ -111,7 +112,7 @@ If you have any clickable view into your content layout
 ```java
 TutoShowcase.from(this)
     .setContentView(R.layout.tuto_sample)
-    .onClick(R.id.clickableView, new View.OnClickListener() {
+    .onClickContentView(R.id.clickableView, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             
