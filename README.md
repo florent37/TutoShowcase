@@ -38,7 +38,7 @@ TutoShowcase.from(this)
     .setContentView(R.layout.tuto_sample)
     ...
     .show()
-``
+```
 
 [![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/content_view.png)](https://github.com/florent37/TutoShowcase)
 [![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/sample_without_frame.png)](https://github.com/florent37/TutoShowcase)
