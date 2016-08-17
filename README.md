@@ -2,7 +2,7 @@
 
 A simple and Elegant Showcase view for Android
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/sample_small.png)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/sample.png)](https://github.com/florent37/TutoShowcase)
 
 ```java
 Tuto.from(this)
