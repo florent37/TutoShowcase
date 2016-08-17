@@ -2,7 +2,7 @@
 
 A simple and Elegant Showcase view for Android
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/sample.png)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/sample.png)](https://github.com/florent37/TutoShowcase)
 
 ```java
 TutoShowcase.from(this)
@@ -40,7 +40,7 @@ TutoShowcase.from(this)
     .show()
 ```
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/content.png)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/content.png)](https://github.com/florent37/TutoShowcase)
 
 # Indicators
 
@@ -53,7 +53,7 @@ You can higlight some elements to user
 .addCircle()
 ```
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/circle.png)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/circle.png)](https://github.com/florent37/TutoShowcase)
 
 ## RoundRect
 
@@ -62,7 +62,7 @@ You can higlight some elements to user
 .addRoundRect()
 ```
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/roundrect.png)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/roundrect.png)](https://github.com/florent37/TutoShowcase)
 
 # Actions
 
@@ -77,14 +77,14 @@ Some actions can be explained to the user
 
 ## Swipable Left / Right
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/swipableRight.gif)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeRight.gif)](https://github.com/florent37/TutoShowcase)
 
 ```java
 .on(view)
 .displaySwipableLeft()
 ```
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/swipableRight.gif)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeRight.gif)](https://github.com/florent37/TutoShowcase)
 ```java
 .on(view)
 .displaySwipableRight()
