@@ -23,3 +23,33 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:' + project.supportVersion
 }
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'TutoShowcase'
+    orgName = 'florent37'
+
+    publishedGroupId = 'com.github.florent37'
+    libraryName = 'TutoShowcase'
+    artifact = 'tutoshowcase'
+
+    libraryDescription = 'TutoShowcase'
+
+    siteUrl = 'https://github.com/florent37/TutoShowcase'
+    gitUrl = 'https://github.com/florent37/TutoShowcase.git'
+
+    libraryVersion = rootProject.ext.libraryVersion
+
+    developerId = 'florent37'
+    developerName = 'Florent Champigny'
+    developerEmail = 'champigny.florent@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+if (project.rootProject.file('local.properties').exists()) {
+    apply from: rootProject.file('gradle/install-v1.gradle')
+    apply from: rootProject.file('gradle/bintray-android-v1.gradle')
+}
