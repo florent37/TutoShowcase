@@ -32,20 +32,23 @@ public class MainActivity extends AppCompatActivity {
 
     protected void displayTuto() {
         TutoShowcase.from(this)
-                .setContentView(R.layout.tuto_sample)
+                //s.setContentView(R.layout.tuto_sample)
 
-                .on(R.id.about)
-                .addCircle()
-                .withBorder()
-                .onClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                //.on(R.id.about)
+                //.addCircle()
+                //.withBorder()
+                //.onClick(new View.OnClickListener() {
+                //    @Override
+                //    public void onClick(View v) {
 
-                    }
-                })
+                //    }
+                //})
+
+                //.on(R.id.display)
+                //.addRoundRect()
 
                 .on(R.id.swipable)
-                .displaySwipableRight()
+                .displayScrollable()
                 .animated(true)
 
                 .show();
