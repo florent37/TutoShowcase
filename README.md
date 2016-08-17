@@ -75,14 +75,16 @@ Some actions can be explained to the user
 .displayScrollable()
 ```
 
-## Swipable Left / Right
+## Swipable Left
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeRight.gif)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeLeft.gif)](https://github.com/florent37/TutoShowcase)
 
 ```java
 .on(view)
 .displaySwipableLeft()
 ```
+
+## Swipable Right
 
 [![screen](https://raw.githubusercontent.com/florent37/TutoShowcase/master/media/swipeRight.gif)](https://github.com/florent37/TutoShowcase)
 ```java
@@ -102,4 +104,19 @@ You can listen for indicator click
          //your action
     }
 }
+```
+
+If you have any clickable view into your content layout 
+
+```java
+TutoShowcase.from(this)
+    .setContentView(R.layout.tuto_sample)
+    .onClick(R.id.clickableView, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            
+                        }
+                    })
+    ...
+    .show()
 ```

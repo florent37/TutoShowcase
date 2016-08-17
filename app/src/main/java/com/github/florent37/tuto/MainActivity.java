@@ -32,7 +32,13 @@ public class MainActivity extends AppCompatActivity {
 
     protected void displayTuto() {
         TutoShowcase.from(this)
-                //s.setContentView(R.layout.tuto_sample)
+                .setContentView(R.layout.tuto_sample)
+                .onClick(R.id.clickableView, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
 
                 //.on(R.id.about)
                 //.addCircle()
