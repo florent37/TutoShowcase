@@ -40,7 +40,7 @@ TutoShowcase.from(this)
     .show()
 ```
 
-[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/master/media/content.png)](https://github.com/florent37/TutoShowcase)
+[![screen](https://raw.githubusercontent.com/florent37/TutoShowCase/develop/media/content.png)](https://github.com/florent37/TutoShowcase)
 
 # Indicators
 
