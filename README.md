@@ -24,6 +24,14 @@ TutoShowcase.from(this)
     .show();
 ```
 
+# Download
+
+[ ![Download](https://api.bintray.com/packages/florent37/maven/TutoShowcase/images/download.svg) ](https://bintray.com/florent37/maven/TutoShowcase/_latestVersion)
+
+```groovy
+compile 'com.github.florent37:tutoshowcase:1.0.0'
+```
+
 # Tutorial
 
 You can simply limit a showcase visibility to once with `.showOnce(string)`
