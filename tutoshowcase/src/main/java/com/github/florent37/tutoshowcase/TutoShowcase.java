@@ -130,6 +130,19 @@ public final class TutoShowcase {
         return this;
     }
 
+    public TutoShowcase hide() {
+        ViewCompat.animate(container)
+                .alpha(0f)
+                .setDuration(container.getResources().getInteger(android.R.integer.config_longAnimTime))
+                .start();
+        container.setVisibility(View.GONE);
+        return this;
+    }
+
+    public boolean isShowing() {
+        return container.getVisibility() == View.VISIBLE;
+    }
+
     public TutoShowcase showOnce(String key) {
         if (!sharedPreferences.contains(key)) {
             show();
@@ -185,6 +198,14 @@ public final class TutoShowcase {
 
         public TutoShowcase show() {
             return tutoShowcase.show();
+        }
+
+        public boolean isShowing() {
+            return tutoShowcase.isShowing();
+        }
+
+        public TutoShowcase hide() {
+            return tutoShowcase.hide();
         }
 
         private void displaySwipable(final boolean left) {
@@ -407,6 +428,14 @@ public final class TutoShowcase {
 
         public TutoShowcase show() {
             return viewActions.show();
+        }
+
+        public boolean isShowing() {
+            return viewActions.isShowing();
+        }
+
+        public TutoShowcase hide() {
+            return viewActions.hide();
         }
 
         public TutoShowcase showOnce(String key) {

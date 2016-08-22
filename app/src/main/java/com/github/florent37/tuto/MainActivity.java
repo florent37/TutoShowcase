@@ -10,6 +10,8 @@ import com.github.florent37.tutoshowcase.TutoShowcase;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TutoShowcase showcase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void displayTuto() {
-        TutoShowcase.from(this)
+        showcase = TutoShowcase.from(this)
                 //s.setContentView(R.layout.tuto_sample)
 
                 //.on(R.id.about)
@@ -52,5 +54,11 @@ public class MainActivity extends AppCompatActivity {
                 .animated(true)
 
                 .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (showcase != null && showcase.isShowing()) showcase.hide();
+        else super.onBackPressed();
     }
 }
