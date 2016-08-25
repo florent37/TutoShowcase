@@ -121,11 +121,11 @@ If you have any clickable view into your content layout
 TutoShowcase.from(this)
     .setContentView(R.layout.tuto_sample)
     .onClickContentView(R.id.clickableView, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+        @Override
+        public void onClick(View view) {
                             
-                        }
-                    })
+        }
+    })
     ...
     .show()
 ```
