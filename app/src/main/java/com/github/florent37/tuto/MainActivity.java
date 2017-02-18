@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.github.florent37.tutoshowcase.TutoShowcase;
 
@@ -32,8 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
     protected void displayTuto() {
         TutoShowcase.from(this)
+                .setListener(new TutoShowcase.Listener() {
+                    @Override
+                    public void onDismissed() {
+                        Toast.makeText(MainActivity.this, "Tutorial dismissed", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .setContentView(R.layout.tuto_sample)
-                .setFitsSystemWindows(false)
+                .setFitsSystemWindows(true)
                 .on(R.id.about)
                 .addCircle()
                 .withBorder()

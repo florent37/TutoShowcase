@@ -35,12 +35,17 @@ import com.github.florent37.tutoshowcase.shapes.RoundRect;
 
 public final class TutoShowcase {
 
+    public interface Listener {
+        void onDismissed();
+    }
+
     public static final float DEFAULT_ADDITIONAL_RADIUS_RATIO = 1.5f;
     private static final String SHARED_TUTO = "SHARED_TUTO";
     private FrameLayout container;
     private TutoView tutoView;
     private SharedPreferences sharedPreferences;
     private boolean fitsSystemWindows = false;
+    private Listener listener;
 
     private TutoShowcase(@NonNull Activity activity) {
         this.sharedPreferences = activity.getSharedPreferences(SHARED_TUTO, Context.MODE_PRIVATE);
@@ -80,6 +85,11 @@ public final class TutoShowcase {
         return this;
     }
 
+    public TutoShowcase setListener(Listener listener) {
+        this.listener = listener;
+        return this;
+    }
+
     public TutoShowcase setContentView(@LayoutRes int content) {
         View child = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
         container.addView(child, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -97,6 +107,9 @@ public final class TutoShowcase {
                         ViewParent parent = view.getParent();
                         if (parent instanceof ViewGroup) {
                             ((ViewGroup) parent).removeView(view);
+                        }
+                        if(listener != null) {
+                            listener.onDismissed();
                         }
                     }
                 }).start();
