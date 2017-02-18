@@ -40,6 +40,7 @@ public final class TutoShowcase {
     private FrameLayout container;
     private TutoView tutoView;
     private SharedPreferences sharedPreferences;
+    private boolean fitsSystemWindows = false;
 
     private TutoShowcase(@NonNull Activity activity) {
         this.sharedPreferences = activity.getSharedPreferences(SHARED_TUTO, Context.MODE_PRIVATE);
@@ -53,6 +54,10 @@ public final class TutoShowcase {
                 if (content != null) {
                     content.addView(container, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     this.container.addView(tutoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    if(android.os.Build.VERSION.SDK_INT >= 16) {
+                        View inflatedLayout = content.getChildAt(0);
+                        this.fitsSystemWindows = inflatedLayout != null ? inflatedLayout.getFitsSystemWindows() : false;
+                    }
                 }
             }
         }
@@ -67,6 +72,11 @@ public final class TutoShowcase {
 
     public TutoShowcase setBackgroundColor(@ColorInt int color) {
         tutoView.setBackgroundOverlayColor(color);
+        return this;
+    }
+
+    public TutoShowcase setFitsSystemWindows(boolean fitsSystemWindows) {
+        this.fitsSystemWindows = fitsSystemWindows;
         return this;
     }
 
@@ -155,11 +165,11 @@ public final class TutoShowcase {
     }
 
     public ViewActions on(@IdRes int viewId) {
-        return new ViewActions(this, findViewById(viewId));
+        return new ViewActions(this, findViewById(viewId), fitsSystemWindows);
     }
 
     public ViewActions on(View view) {
-        return new ViewActions(this, view);
+        return new ViewActions(this, view, fitsSystemWindows);
     }
 
     private static class ViewActionsSettings {
@@ -176,11 +186,13 @@ public final class TutoShowcase {
         private final TutoShowcase tutoShowcase;
         private final View view;
         private final ViewActionsSettings settings;
+        private final boolean fitsSystemWindow;
 
-        public ViewActions(final TutoShowcase tutoShowcase, View view) {
+        public ViewActions(final TutoShowcase tutoShowcase, View view, boolean fitsSystemWindow) {
             this.tutoShowcase = tutoShowcase;
             this.view = view;
             this.settings = new ViewActionsSettings();
+            this.fitsSystemWindow = fitsSystemWindow;
         }
 
         public ViewActions on(@IdRes int viewId) {
@@ -287,14 +299,13 @@ public final class TutoShowcase {
                 @Override
                 public boolean onPreDraw() {
                     int x = (int) (rect.centerX() - hand.getWidth() / 2f);
-                    int y = (int) (rect.centerY() - hand.getHeight() / 2f) - getStatusBarHeight();
-
+                    int y = (int) (rect.centerY() - hand.getHeight() / 2f) - getStatusBarOffset();
                     ViewCompat.setTranslationY(hand, y);
                     ViewCompat.setTranslationX(hand, x);
 
                     if (settings.animated)
                         ViewCompat.animate(hand)
-                                .translationY(y + height * 0.8f - getStatusBarHeight())
+                                .translationY(y + height * 0.8f - getStatusBarOffset())
                                 .setStartDelay(settings.delay != null ? settings.delay : 500)
                                 .setDuration(settings.duration != null ? settings.duration : 600)
                                 .setInterpolator(new DecelerateInterpolator());
@@ -314,7 +325,7 @@ public final class TutoShowcase {
             view.getGlobalVisibleRect(rect);
 
             int cx = rect.centerX();
-            int cy = rect.centerY() - getStatusBarHeight();
+            int cy = rect.centerY() - getStatusBarOffset();
             int radius = (int) (Math.max(rect.width(), rect.height()) / 2f * additionalRadiusRatio);
             Circle circle = new Circle(cx, cy, radius);
             circle.setDisplayBorder(settings.withBorder);
@@ -364,7 +375,7 @@ public final class TutoShowcase {
             int padding = 40;
 
             final int x = rect.left - padding;
-            final int y = rect.top - getStatusBarHeight() - padding;
+            final int y = rect.top - getStatusBarOffset() - padding;
             final int width = rect.width() + 2 * padding;
             final int height = rect.height() + 2 * padding;
 
@@ -375,13 +386,21 @@ public final class TutoShowcase {
             tutoShowcase.tutoView.postInvalidate();
         }
 
-        private int getStatusBarHeight() {
+        /**
+         * Status bar offset depends on content layout fitsSystemWindow flag.
+         * For layouts that fit system window, we should not apply status bar offset.
+         *
+         * @return Status bar offset or 0 if content fits system window
+         */
+        private int getStatusBarOffset() {
             int result = 0;
-            Context context = view.getContext();
-            Resources resources = context.getResources();
-            int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                result = resources.getDimensionPixelSize(resourceId);
+            if(!this.fitsSystemWindow) {
+                Context context = view.getContext();
+                Resources resources = context.getResources();
+                int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+                if (resourceId > 0) {
+                    result = resources.getDimensionPixelSize(resourceId);
+                }
             }
             return result;
         }
@@ -391,7 +410,7 @@ public final class TutoShowcase {
             int width = (int) (rect.width() * additionalRadiusRatio);
             int height = (int) (rect.height() * additionalRadiusRatio);
             int x = rect.left - (width - rect.width()) / 2;
-            int y = rect.top - (height - rect.height()) / 2 - getStatusBarHeight();
+            int y = rect.top - (height - rect.height()) / 2 - getStatusBarOffset();
             cliclableView.setLayoutParams(new ViewGroup.MarginLayoutParams(width, height));
             ViewCompat.setTranslationY(cliclableView, y);
             ViewCompat.setTranslationX(cliclableView, x);

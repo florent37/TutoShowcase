@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void displayTuto() {
         TutoShowcase.from(this)
                 .setContentView(R.layout.tuto_sample)
-
+                .setFitsSystemWindows(false)
                 .on(R.id.about)
                 .addCircle()
                 .withBorder()
