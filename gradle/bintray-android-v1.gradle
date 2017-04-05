@@ -40,6 +40,7 @@ bintray {
     user = _user
     key = _key
 
+    override = true
     configurations = ['archives']
     pkg {
         repo = bintrayRepo

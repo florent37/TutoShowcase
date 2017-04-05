@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 })
 
                 .on(R.id.swipable)
-                .displayScrollable()
+                .displaySwipableLeft()
+                .delayed(399)
                 .animated(true)
 
                 .show();
