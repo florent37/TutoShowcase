@@ -9,12 +9,12 @@ import android.widget.Toast;
 
 import com.github.florent37.tutoshowcase.TutoShowcase;
 
-public class MainActivity extends AppCompatActivity {
+public class TutoShowcaseMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.tuto_showcase_activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         findViewById(R.id.display).setOnClickListener(new View.OnClickListener() {
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.tutoshowcase_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
                 .setListener(new TutoShowcase.Listener() {
                     @Override
                     public void onDismissed() {
-                        Toast.makeText(MainActivity.this, "Tutorial dismissed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TutoShowcaseMainActivity.this, "Tutorial dismissed", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setContentView(R.layout.tuto_sample)
+                .setContentView(R.layout.tuto_showcase_tuto_sample)
                 .setFitsSystemWindows(true)
                 .on(R.id.about)
                 .addCircle()

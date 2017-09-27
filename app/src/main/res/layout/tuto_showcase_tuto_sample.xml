@@ -40,7 +40,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                app:srcCompat="@drawable/circle"/>
+                app:srcCompat="@drawable/tutoshowcase_circle"/>
 
             <TextView
                 android:layout_width="wrap_content"
