@@ -30,11 +30,6 @@ ext {
     sdk = 27
     buildTools = "27.0.2"
     minSdk = 14
-<<<<<<< HEAD
     libraryVersion = "1.0.2"
     supportVersion = "24.1.1"
-=======
-    libraryVersion = "1.0.1"
-    supportVersion = "27.0.2"
->>>>>>> 368b307eeab3dc520946744bc3e8da3e68bb588b
 }
