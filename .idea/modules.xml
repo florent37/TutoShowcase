@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TutoShowcase.iml" filepath="$PROJECT_DIR$/TutoShowcase.iml" />
+      <module fileurl="file://F:\Development\TutoShowcase-searchy\TutoShowcase.iml" filepath="F:\Development\TutoShowcase-searchy\TutoShowcase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TutoShowcase-searchy.iml" filepath="$PROJECT_DIR$/TutoShowcase-searchy.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://F:\Development\TutoShowcase-searchy\app\app.iml" filepath="F:\Development\TutoShowcase-searchy\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/tutoshowcase/tutoshowcase.iml" filepath="$PROJECT_DIR$/tutoshowcase/tutoshowcase.iml" />
+      <module fileurl="file://F:\Development\TutoShowcase-searchy\tutoshowcase\tutoshowcase.iml" filepath="F:\Development\TutoShowcase-searchy\tutoshowcase\tutoshowcase.iml" />
     </modules>
   </component>
 </project>
