@@ -70,11 +70,6 @@ public final class TutoShowcase {
         ViewCompat.setAlpha(container, 0f);
     }
 
-    public TutoShowcase fitsSystemWindow(boolean fitsSystemWindow){
-        this.fitsSystemWindow = fitsSystemWindow;
-        return this;
-    }
-
     @NonNull
     public static TutoShowcase from(@NonNull Activity activity) {
         return new TutoShowcase(activity);
