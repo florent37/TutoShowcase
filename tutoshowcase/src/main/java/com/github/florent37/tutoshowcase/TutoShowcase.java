@@ -55,13 +55,13 @@ public final class TutoShowcase {
         if (window != null) {
             ViewGroup decorView = (ViewGroup) window.getDecorView();
             if (decorView != null) {
-                ViewGroup content = (ViewGroup) decorView.findViewById(android.R.id.content);
+                ViewGroup content = decorView.findViewById(android.R.id.content);
                 if (content != null) {
                     content.addView(container, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     this.container.addView(tutoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                    if(android.os.Build.VERSION.SDK_INT >= 16) {
+                    if (android.os.Build.VERSION.SDK_INT >= 16) {
                         View inflatedLayout = content.getChildAt(0);
-                        this.fitsSystemWindows = inflatedLayout != null ? inflatedLayout.getFitsSystemWindows() : false;
+                        this.fitsSystemWindows = inflatedLayout != null && inflatedLayout.getFitsSystemWindows();
                     }
                 }
             }
@@ -108,7 +108,7 @@ public final class TutoShowcase {
                         if (parent instanceof ViewGroup) {
                             ((ViewGroup) parent).removeView(view);
                         }
-                        if(listener != null) {
+                        if (listener != null) {
                             listener.onDismissed();
                         }
                     }
@@ -161,7 +161,16 @@ public final class TutoShowcase {
         return this;
     }
 
-    public TutoShowcase resetTutorial(String key) {
+    public boolean isShowOnce(String key)
+    {
+        if (sharedPreferences.contains(key)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public TutoShowcase resetShowOnce(String key) {
         sharedPreferences.edit().remove(key).apply();
         return this;
     }
@@ -407,7 +416,7 @@ public final class TutoShowcase {
          */
         private int getStatusBarOffset() {
             int result = 0;
-            if(!this.fitsSystemWindow) {
+            if (!this.fitsSystemWindow) {
                 Context context = view.getContext();
                 Resources resources = context.getResources();
                 int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
@@ -490,12 +499,12 @@ public final class TutoShowcase {
             super(viewActions);
         }
 
-        public ActionViewActionsEditor delayed(int delay){
+        public ActionViewActionsEditor delayed(int delay) {
             this.viewActions.settings.delay = delay;
             return this;
         }
 
-        public ActionViewActionsEditor duration(int duration){
+        public ActionViewActionsEditor duration(int duration) {
             this.viewActions.settings.duration = duration;
             return this;
         }

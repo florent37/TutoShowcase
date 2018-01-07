@@ -47,7 +47,7 @@ public class Circle extends Shape {
 
     @Override
     public void drawOn(Canvas canvas) {
-        if(isDisplayBorder()) {
+        if (isDisplayBorder()) {
             canvas.drawCircle(getX(), getY(), getRadius() * 1.2f, getBorderPaint());
         }
 

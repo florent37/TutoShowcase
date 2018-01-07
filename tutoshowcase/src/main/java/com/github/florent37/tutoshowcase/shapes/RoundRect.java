@@ -2,7 +2,6 @@ package com.github.florent37.tutoshowcase.shapes;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.RectF;
 
 public class RoundRect extends Shape {
@@ -39,7 +38,7 @@ public class RoundRect extends Shape {
 
     @Override
     public void drawOn(Canvas canvas) {
-        if(isDisplayBorder()){
+        if (isDisplayBorder()) {
             drawRoundedRect(canvas, getX() - BORDER_PADDING, getY() - BORDER_PADDING, getX() + getWidth() + BORDER_PADDING, getY() + getHeight() + BORDER_PADDING, getBorderPaint());
         }
         drawRoundedRect(canvas, getX(), getY(), getX() + getWidth(), getY() + getHeight(), paint);
