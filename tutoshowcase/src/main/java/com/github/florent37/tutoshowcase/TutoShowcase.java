@@ -161,7 +161,16 @@ public final class TutoShowcase {
         return this;
     }
 
-    public TutoShowcase resetTutorial(String key) {
+    public boolean isShowOnce(String key)
+    {
+        if (sharedPreferences.contains(key)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public TutoShowcase resetShowOnce(String key) {
         sharedPreferences.edit().remove(key).apply();
         return this;
     }

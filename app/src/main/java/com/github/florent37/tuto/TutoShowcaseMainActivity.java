@@ -55,7 +55,6 @@ public class TutoShowcaseMainActivity extends AppCompatActivity {
                 .displaySwipableLeft()
                 .delayed(399)
                 .animated(true)
-
                 .show();
     }
 }
