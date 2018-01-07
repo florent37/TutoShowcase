@@ -27,7 +27,7 @@ if(project.rootProject.file('local.properties').exists() && (_user == null || _u
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
     _user = properties.getProperty("bintray.user")
-    _key = properties.getProperty("bintray.apikey");
+    _key = properties.getProperty("bintray.apikey")
     _passphrase = properties.getProperty("bintray.gpg.password")
 }
 
