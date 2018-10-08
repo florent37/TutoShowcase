@@ -11,6 +11,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.databinding.DataBindingComponent;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
@@ -93,6 +96,12 @@ public final class TutoShowcase {
     public TutoShowcase setContentView(@LayoutRes int content) {
         View child = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
         container.addView(child, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        return this;
+    }
+
+    public TutoShowcase setBindingContentView(@LayoutRes int content) {
+        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(tutoView.getContext()), content, container, false);
+        container.addView(binding.getRoot(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return this;
     }
 
