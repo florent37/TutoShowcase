@@ -17,6 +17,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import java.util.Locale;
 
 import com.example.tutoshowcase.R;
 import com.github.florent37.tutoshowcase.shapes.Circle;
@@ -244,18 +247,28 @@ public final class TutoShowcase {
             hand.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
+                    boolean isLayoutRTL = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL;
+					
                     int x = (int) (rect.centerX() - hand.getWidth() / 2f);
                     int y = (int) (rect.centerY() - hand.getHeight() / 2f);
 
                     ViewCompat.setTranslationY(hand, y);
-                    ViewCompat.setTranslationX(hand, x);
+					if (!left && isLayoutRTL) {
+						ViewCompat.setTranslationX(hand, -x);
+					} else {
+						ViewCompat.setTranslationX(hand, x);
+					}
 
                     if (settings.animated) {
                         float tX;
                         if (left) {
                             tX = rect.left;
                         } else {
-                            tX = rect.left + rect.width() * 0.7f;
+                            if (isLayoutRTL) {
+								tX = rect.left;
+							} else {
+								tX = rect.left + rect.width() * 0.7f;
+							}
                         }
                         ViewCompat.animate(hand).translationX(tX)
                                 .setStartDelay(settings.delay != null ? settings.delay : 500)
