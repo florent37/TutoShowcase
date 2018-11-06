@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.github.florent37.tutoshowcase.shapes.Circle;
+import com.github.florent37.tutoshowcase.shapes.Rectangle;
 import com.github.florent37.tutoshowcase.shapes.RoundRect;
 import com.github.florent37.tutoshowcase.shapes.Shape;
 
@@ -41,6 +42,10 @@ class TutoView extends View {
 
     public void addRoundRect(RoundRect roundRect) {
         this.shapes.add(roundRect);
+    }
+
+    public void addRect(Rectangle rectangle){
+        this.shapes.add(rectangle);
     }
 
     public int getBackgroundOverlayColor() {
