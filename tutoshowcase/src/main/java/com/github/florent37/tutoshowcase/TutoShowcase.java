@@ -46,6 +46,7 @@ public final class TutoShowcase {
     private SharedPreferences sharedPreferences;
     private boolean fitsSystemWindows = false;
     private Listener listener;
+    private View inflatedLayout;
 
     private TutoShowcase(@NonNull Activity activity) {
         this.sharedPreferences = activity.getSharedPreferences(SHARED_TUTO, Context.MODE_PRIVATE);
@@ -90,9 +91,18 @@ public final class TutoShowcase {
         return this;
     }
 
+    public View getInflatedLayout() {
+        return inflatedLayout;
+    }
+
+    public void setInflatedLayout(View inflatedLayout) {
+        this.inflatedLayout = inflatedLayout;
+    }
+
     public TutoShowcase setContentView(@LayoutRes int content) {
         View child = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
         container.addView(child, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        inflatedLayout = child;
         return this;
     }
 
