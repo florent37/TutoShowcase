@@ -96,10 +96,6 @@ public final class TutoShowcase {
         return inflatedLayout;
     }
 
-    public void setInflatedLayout(View inflatedLayout) {
-        this.inflatedLayout = inflatedLayout;
-    }
-
     public TutoShowcase setContentView(@LayoutRes int content) {
         inflatedLayout = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
         container.addView(inflatedLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
