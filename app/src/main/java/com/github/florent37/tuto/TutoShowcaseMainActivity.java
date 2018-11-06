@@ -42,7 +42,7 @@ public class TutoShowcaseMainActivity extends AppCompatActivity {
                 .setContentView(R.layout.tuto_showcase_tuto_sample)
                 .setFitsSystemWindows(true)
                 .on(R.id.about)
-                .addCircle()
+                .addRect()
                 .withBorder()
                 .onClick(new View.OnClickListener() {
                     @Override

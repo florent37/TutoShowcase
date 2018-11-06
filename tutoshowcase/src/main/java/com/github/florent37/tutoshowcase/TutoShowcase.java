@@ -31,6 +31,7 @@ import android.widget.ImageView;
 
 import com.example.tutoshowcase.R;
 import com.github.florent37.tutoshowcase.shapes.Circle;
+import com.github.florent37.tutoshowcase.shapes.Rectangle;
 import com.github.florent37.tutoshowcase.shapes.RoundRect;
 
 public final class TutoShowcase {
@@ -46,6 +47,7 @@ public final class TutoShowcase {
     private SharedPreferences sharedPreferences;
     private boolean fitsSystemWindows = false;
     private Listener listener;
+    private View inflatedLayout;
 
     private TutoShowcase(@NonNull Activity activity) {
         this.sharedPreferences = activity.getSharedPreferences(SHARED_TUTO, Context.MODE_PRIVATE);
@@ -90,9 +92,13 @@ public final class TutoShowcase {
         return this;
     }
 
+    public View getInflatedLayout() {
+        return inflatedLayout;
+    }
+
     public TutoShowcase setContentView(@LayoutRes int content) {
-        View child = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
-        container.addView(child, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        inflatedLayout = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
+        container.addView(inflatedLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return this;
     }
 
@@ -161,8 +167,7 @@ public final class TutoShowcase {
         return this;
     }
 
-    public boolean isShowOnce(String key)
-    {
+    public boolean isShowOnce(String key) {
         if (sharedPreferences.contains(key)) {
             return true;
         }
@@ -374,6 +379,18 @@ public final class TutoShowcase {
             return new ShapeViewActionsEditor(this);
         }
 
+        public ShapeViewActionsEditor addRect() {
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    addRectOnView();
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    return false;
+                }
+            });
+            return new ShapeViewActionsEditor(this);
+        }
+
         public ShapeViewActionsEditor addCircle() {
             return addCircle(DEFAULT_ADDITIONAL_RADIUS_RATIO);
         }
@@ -407,6 +424,24 @@ public final class TutoShowcase {
             addClickableView(rect, settings.onClickListener, additionalRadiusRatio);
             tutoShowcase.tutoView.postInvalidate();
         }
+
+        private void addRectOnView() {
+            Rect rect = new Rect();
+            view.getGlobalVisibleRect(rect);
+
+
+            final int x = rect.left;
+            final int y = rect.top - getStatusBarOffset();
+            final int width = rect.width();
+            final int height = rect.height();
+
+            Rectangle rectangle = new Rectangle(x, y, width, height);
+            rectangle.setDisplayBorder(settings.withBorder);
+            tutoShowcase.tutoView.addRect(rectangle);
+            addClickableView(rect, settings.onClickListener, 0f);
+            tutoShowcase.tutoView.postInvalidate();
+        }
+
 
         /**
          * Status bar offset depends on content layout fitsSystemWindow flag.
