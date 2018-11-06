@@ -100,9 +100,8 @@ public final class TutoShowcase {
     }
 
     public TutoShowcase setContentView(@LayoutRes int content) {
-        View child = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
-        container.addView(child, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        inflatedLayout = child;
+        inflatedLayout = LayoutInflater.from(tutoView.getContext()).inflate(content, container, false);
+        container.addView(inflatedLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return this;
     }
 
@@ -171,8 +170,7 @@ public final class TutoShowcase {
         return this;
     }
 
-    public boolean isShowOnce(String key)
-    {
+    public boolean isShowOnce(String key) {
         if (sharedPreferences.contains(key)) {
             return true;
         }
